@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Rock Paper Scissors</h1>
+
+  <div class="choices">
+    <div class="choice" id="rock">
+      <img src="./images/rock.png" alt="Rock" />
+    </div>
+    <div class="choice" id="paper">
+      <img src="./images/paper.png" alt="Paper" />
+    </div>
+    <div class="choice" id="scissors">
+      <img src="./images/scissor.png" alt="Scissors" />
+    </div>
+  </div>
+
+  <div class="score-board">
+    <div class="score">
+      <p id="user-score">0</p>
+      <p>User</p>
+    </div>
+    <div class="score">
+      <p id="sys-score">0</p>
+      <p>Robot
+    </div>
+  </div>
+
+  <div class="msg-container">
+    <p class="msg" id="msg">Play your move</p>
+  </div>
+  <script>
+
+
+    let userscore=0;
+    let robotscore=0;
+    const choices=document.querySelectorAll(".choice");
+    const msg=document.querySelector("#msg");
+    const userScorePare=document.querySelector("#user-score");
+    const sysScorePare=document.querySelector("#sys-score");
+    const genComputerChoice=()=>{
+        const options=["rock","paper","sciccors"];
+        const randIdx= Math.floor(Math.random()*3);
+        return options[randIdx];
+    }
+    const drawGame=()=>{
+        console.log("Game was draw");
+        msg.innerText="It's a draw";
+        msg.style.backgroundColor="orange";
+    }
+    const showWinner=(userWin,choiceId,computerChoice)=>{
+        if(userWin){
+            userscore++;
+            userScorePare.innerText=userscore;
+            console.log("you win");
+            msg.innerText='You win!!';
+            msg.style.backgroundColor="green";
+        }else{
+            robotscore++;
+            sysScorePare.innerText=robotscore;
+            console.log("you lose");
+            msg.innerText='You lose :/';
+            msg.style.backgroundColor="red";
+        }
+    }
+    const playGame=(choiceId)=>{
+        console.log("user choice:",choiceId);
+        const computerChoice=genComputerChoice();
+        console.log("computer choice:",computerChoice);
+        if(choiceId===computerChoice){
+            drawGame();
+        }else{
+            let userWin=true;
+            if(choiceId==="rock"){
+                userWin=computerChoice==="paper"?false:true;
+            }else if(choiceId==="paper"){
+                userWin=computerChoice==="scissors"?false:true;
+            }else{
+                userWin=computerChoice==="rock"?false:true;
+            }
+            showWinner(userWin);
+        }
+    };
+    choices.forEach((choice)=>{
+        choice.addEventListener("click",()=>{
+            const choiceId=choice.getAttribute("id");
+            playGame(choiceId);
+        });
+    });
+  </script>
+</body>
+</html>
